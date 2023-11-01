@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+    app:
+        container_name: flask
+        build: .
+        ports:
+            - "127.0.0.1:8000:5000"   # Flask debug server
+            - "127.0.0.1:8080:80"     # Flask apache server
+        volumes:
+            - ./:/app
+            - ./conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+        depends_on:
+            -   db
+
+    db:
+        container_name: mongo
+        image: mongo
+        volumes:
+            - ./data:/data/db
+        ports:
+            - "127.0.0.1:27018:27017"
+
